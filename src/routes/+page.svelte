@@ -1,2 +1,9 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<div class="container">
+	<h1>Track your Sudoku journey, one puzzle at a time! 🎊</h1>
+
+	<p>
+		Ready to turn your daily Sudoku habit into a data-driven adventure? <a href="/add"
+			>Get started</a
+		>
+	</p>
+</div>

@@ -1,6 +1,7 @@
-import { pgTable, serial, text, integer } from 'drizzle-orm/pg-core';
+import { pgTable, integer, timestamp, serial } from 'drizzle-orm/pg-core';
 
-export const user = pgTable('user', {
+export const puzzleCompletions = pgTable('puzzle-completions', {
 	id: serial('id').primaryKey(),
-	age: integer('age')
+	puzzle_date: timestamp('puzzle_date').defaultNow().notNull(),
+	completionTime: integer('completion_time').notNull()
 });

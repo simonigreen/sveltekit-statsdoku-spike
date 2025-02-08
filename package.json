@@ -1,5 +1,5 @@
 {
-	"name": "sveltekit-statsdoko-spike",
+	"name": "sveltekit-statsdoku-spike",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
@@ -42,6 +42,8 @@
 	},
 	"dependencies": {
 		"@neondatabase/serverless": "^0.10.4",
+		"@picocss/pico": "^2.0.6",
+		"date-fns": "^4.1.0",
 		"drizzle-orm": "^0.38.4"
 	}
 }
