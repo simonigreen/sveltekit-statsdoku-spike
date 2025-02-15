@@ -1,14 +1,15 @@
 <script lang="ts">
 	import '@picocss/pico/css/pico.pumpkin.min.css';
 	import '../app.css';
+	import { fade } from 'svelte/transition';
+	import { expoOut } from 'svelte/easing';
+	import { slide } from 'svelte/transition';
+	import { getStores } from '$app/stores';
 
 	let { children } = $props();
 	import Header from '$lib/components/Header.svelte';
-	import { getStores } from '$app/stores';
-	import { expoOut } from 'svelte/easing';
-	import { slide } from 'svelte/transition';
 
-	const { navigating } = getStores();
+	const { navigating, page } = getStores();
 </script>
 
 {#if $navigating?.from}
@@ -17,8 +18,14 @@
 		in:slide={{ delay: 100, duration: 12000, axis: 'x', easing: expoOut }}
 	></div>
 {/if}
+
 <Header />
-<main>{@render children()}</main>
+
+{#key $page.url.pathname}
+	<main in:fade={{ duration: 200, delay: 100 }}>
+		{@render children()}
+	</main>
+{/key}
 
 <style lang="css">
 	.navigation-loader {
