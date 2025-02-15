@@ -11,6 +11,35 @@ export const actions = {
 		const seconds = data.get('seconds');
 		const minutes = data.get('minutes');
 
+		// Validate input types
+		if (typeof seconds !== 'string' || typeof minutes !== 'string') {
+			return {
+				success: false,
+				error: 'Invalid input types'
+			};
+		}
+
+		const mins = minutes === '' ? 0 : parseInt(minutes);
+		const secs = seconds === '' ? 0 : parseInt(seconds);
+
+		// Validate number ranges
+		if (isNaN(mins) || isNaN(secs) || mins < 0 || secs < 0 || mins > 60 || secs > 59) {
+			return {
+				success: false,
+				error: 'Invalid time values. Minutes must be 0-60, seconds must be 0-59'
+			};
+		}
+
+		const totalSeconds = mins * 60 + secs;
+
+		// Validate reasonable completion time (e.g., between 1 second and 2 hours)
+		if (totalSeconds < 1 || totalSeconds > 7200) {
+			return {
+				success: false,
+				error: 'Completion time must be between 1 second and 2 hours'
+			};
+		}
+
 		const today = new Date();
 		const existingCompletion = await db
 			.select()
@@ -29,10 +58,6 @@ export const actions = {
 				error: `You've already submitted a completion time today`
 			};
 		}
-
-		const mins = minutes === '' ? 0 : parseInt(minutes?.toString() || '');
-		const secs = seconds === '' ? 0 : parseInt(seconds?.toString() || '');
-		const totalSeconds = mins * 60 + secs;
 
 		const [newCompletion] = await db
 			.insert(puzzleCompletions)
