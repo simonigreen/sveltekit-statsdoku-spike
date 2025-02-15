@@ -1,24 +1,19 @@
 <script lang="ts">
 	import { format } from 'date-fns';
 	import { secondsToMinutesAndSeconds } from '$lib/utils/time';
-	import { createDelayedLoadingState } from '$lib/utils/loading';
 	import type { PageData } from './$types';
 	export let data: PageData;
-
-	const { showLoading } = createDelayedLoadingState();
 </script>
 
 <div class="container">
 	<h1>Stats</h1>
 
 	{#await data.puzzleCompletions}
-		{#if showLoading}
-			<div class="skeleton-container">
-				<div class="skeleton-item"></div>
-				<div class="skeleton-item"></div>
-				<div class="skeleton-item"></div>
-			</div>
-		{/if}
+		<div class="skeleton-container">
+			<div class="skeleton-item"></div>
+			<div class="skeleton-item"></div>
+			<div class="skeleton-item"></div>
+		</div>
 	{:then completions}
 		{#if completions.length === 0}
 			<p>No stats available</p>
