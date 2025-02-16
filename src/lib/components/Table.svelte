@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { format } from 'date-fns';
 	import { secondsToMinutesAndSeconds } from '$lib/utils/time';
+	import type { PuzzleCompletion } from '$lib/types';
 
-	export let puzzleCompletions: Array<{
-		puzzle_date: Date;
-		completionTime: number;
-	}>;
+	export let puzzleCompletions: PuzzleCompletion[];
 </script>
 
 <table>
