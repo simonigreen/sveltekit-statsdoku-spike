@@ -42,7 +42,11 @@
 	},
 	"dependencies": {
 		"@neondatabase/serverless": "^0.10.4",
+		"@oslojs/crypto": "^1.0.1",
+		"@oslojs/encoding": "^1.1.0",
 		"@picocss/pico": "^2.0.6",
+		"@pilcrowjs/object-parser": "^0.0.4",
+		"arctic": "^3.3.0",
 		"date-fns": "^4.1.0",
 		"drizzle-orm": "^0.38.4"
 	}

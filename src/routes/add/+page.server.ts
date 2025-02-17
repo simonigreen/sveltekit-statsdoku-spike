@@ -1,13 +1,27 @@
 import { db } from '$lib/server/db';
 import { puzzleCompletions } from '$lib/server/db/schema';
-import type { Actions } from './$types';
-import type { RequestEvent } from './$types';
+import { fail, redirect } from '@sveltejs/kit';
+import { deleteSessionTokenCookie, invalidateSession } from '$lib/server/session';
 import { startOfDay, endOfDay } from 'date-fns';
 import { and, gte, lte } from 'drizzle-orm';
+import type { Actions, PageServerLoad } from './$types';
 
-export const actions = {
-	default: async ({ request }: RequestEvent) => {
-		const data = await request.formData();
+export const load: PageServerLoad = async (event) => {
+	if (event.locals.session === null || event.locals.user === null) {
+		throw redirect(302, '/login');
+	}
+	return {
+		user: event.locals.user
+	};
+};
+
+export const actions: Actions = {
+	add: async (event) => {
+		if (event.locals.session === null) {
+			return fail(401);
+		}
+
+		const data = await event.request.formData();
 		const seconds = data.get('seconds');
 		const minutes = data.get('minutes');
 
@@ -32,7 +46,7 @@ export const actions = {
 
 		const totalSeconds = mins * 60 + secs;
 
-		// Validate reasonable completion time (e.g., between 1 second and 2 hours)
+		// Validate reasonable completion time
 		if (totalSeconds < 1 || totalSeconds > 7200) {
 			return {
 				success: false,
@@ -62,7 +76,8 @@ export const actions = {
 		const [newCompletion] = await db
 			.insert(puzzleCompletions)
 			.values({
-				completionTime: totalSeconds
+				completionTime: totalSeconds,
+				userId: event.locals.user.id // Associate completion with user
 			})
 			.returning();
 
@@ -77,5 +92,14 @@ export const actions = {
 			success: false,
 			error: 'Failed to save completion time'
 		};
+	},
+
+	logout: async (event) => {
+		if (event.locals.session === null) {
+			return fail(401);
+		}
+		await invalidateSession(event.locals.session.id);
+		deleteSessionTokenCookie(event);
+		throw redirect(302, '/login');
 	}
-} satisfies Actions;
+};

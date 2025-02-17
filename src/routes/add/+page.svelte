@@ -10,6 +10,7 @@
 
 	<form
 		method="POST"
+		action="?/add"
 		use:enhance={() => {
 			submitting = true;
 
@@ -61,6 +62,10 @@
 			{form.error}. See all your stats on the <a href="/stats">stats page</a>.
 		</div>
 	{/if}
+
+	<form method="POST" action="?/logout" use:enhance>
+		<button>Sign out</button>
+	</form>
 </div>
 
 <style>

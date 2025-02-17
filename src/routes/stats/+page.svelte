@@ -2,6 +2,8 @@
 	import Skeleton from '$lib/components/Skeleton.svelte';
 	import Table from '$lib/components/Table.svelte';
 	import type { PageData } from './$types';
+	import type { PuzzleCompletion } from '$lib/types';
+
 	export let data: PageData;
 </script>
 
@@ -14,7 +16,7 @@
 		{#if completions.length === 0}
 			<p>No stats available</p>
 		{:else}
-			<Table puzzleCompletions={completions} />
+			<Table puzzleCompletions={completions as PuzzleCompletion[]} />
 		{/if}
 	{/await}
 </div>
