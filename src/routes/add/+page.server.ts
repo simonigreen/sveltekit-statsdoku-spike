@@ -3,7 +3,7 @@ import { puzzleCompletions } from '$lib/server/db/schema';
 import { fail, redirect } from '@sveltejs/kit';
 import { deleteSessionTokenCookie, invalidateSession } from '$lib/server/session';
 import { startOfDay, endOfDay } from 'date-fns';
-import { and, gte, lte } from 'drizzle-orm';
+import { and, gte, lte, eq } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
@@ -61,7 +61,8 @@ export const actions: Actions = {
 			.where(
 				and(
 					gte(puzzleCompletions.puzzle_date, startOfDay(today)),
-					lte(puzzleCompletions.puzzle_date, endOfDay(today))
+					lte(puzzleCompletions.puzzle_date, endOfDay(today)),
+					eq(puzzleCompletions.userId, event.locals.user.id) // Add user check
 				)
 			)
 			.limit(1);
