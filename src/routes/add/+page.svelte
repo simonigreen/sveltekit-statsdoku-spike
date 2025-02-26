@@ -38,7 +38,7 @@
 				<input
 					name="seconds"
 					type="number"
-					min="1"
+					min="0"
 					max="59"
 					required
 					autocomplete="off"
